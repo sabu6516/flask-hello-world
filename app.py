@@ -33,19 +33,18 @@ def create():
 @app.route('/db_insert')
 def insert():
     conn = psycopg2.connect("postgresql://sql_lab10_user:S4Ls8GIQDclAbq4RPfzshkPNgIF6NtQf@dpg-cqlddk5umphs738qjoe0-a/sql_lab10")
-    cur = conn.cursor()
-    cur.execute('''
-    INSERT INTO Basketball (First, Last, City, Name, Number)
-    Values
-    ('Jayson', 'Tatum', 'Boston', 'Celtics', 0),
-    ('Stephen', 'Curry', 'San Francisco', 'Warriors', 30),
-    ('Nikola', 'Jokic', 'Denver', 'Nuggets', 15),
-    ('Kawhi', 'Leonard', 'Los Angeles', 'Clippers', 2);
-    ('Sam', 'Buckler', 'Winchester', 'CS3308', 50);
-''')
-    conn.commit()
-    conn.close()
-    return "DB SUCCESFULLY INSERTED"
+    with conn:
+        with conn.cursor() as cur:
+            cur.execute('''
+            INSERT INTO Basketball (First, Last, City, Name, Number)
+            VALUES
+            ('Jayson', 'Tatum', 'Boston', 'Celtics', 0),
+            ('Stephen', 'Curry', 'San Francisco', 'Warriors', 30),
+            ('Nikola', 'Jokic', 'Denver', 'Nuggets', 15),
+            ('Kawhi', 'Leonard', 'Los Angeles', 'Clippers', 2),
+            ('Sam', 'Buckler', 'Winchester', 'CS3308', 50);
+            ''')
+    return "DB SUCCESSFULLY INSERTED"
 
 
 @app.route('/db_select')
